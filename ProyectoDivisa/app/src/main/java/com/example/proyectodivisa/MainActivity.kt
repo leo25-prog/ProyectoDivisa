@@ -70,7 +70,5 @@ class MainActivity : AppCompatActivity() {
                 myJsonTxt.setText(t.message)
             }
         })
-
     }
-
 }
