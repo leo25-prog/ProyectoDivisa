@@ -13,6 +13,7 @@ abstract class MonedaDatabase  : RoomDatabase(){
     companion object {
         private var INSTANCE: MonedaDatabase? = null
         fun getDatabase(context: Context, scope: CoroutineScope): MonedaDatabase {
+
             if (INSTANCE == null) {
                 synchronized(this) {
                     INSTANCE =
@@ -22,6 +23,18 @@ abstract class MonedaDatabase  : RoomDatabase(){
                 }
             }
             return INSTANCE!!
+        /*
+            return INSTANCE ?:
+                synchronized(this){
+                    val instance =
+                        Room.databaseBuilder(context, MonedaDatabase::class.java,"moneda")
+                            .addCallback(MonedaDatabaseC(scope))
+                            .build()
+                INSTANCE = instance
+                instance
+            }
+
+        */
         }
     }
 }

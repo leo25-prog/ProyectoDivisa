@@ -1,20 +1,22 @@
 package com.example.proyectodivisa
 
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.proyectodivisa.Database.Moneda
+import com.example.proyectodivisa.Database.MonedaDao
+import com.example.proyectodivisa.Database.MonedaDatabase
 import com.example.proyectodivisa.Interface.ExchangerateAPI
 import com.example.proyectodivisa.Model.Posts
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
-
-
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         myJsonTxt = findViewById(R.id.jsonText)
         getPosts()
-
     }
 
     private fun getPosts(){
@@ -48,6 +49,22 @@ class MainActivity : AppCompatActivity() {
 
                 var post = response.body()
 
+                val applicationScope = CoroutineScope(SupervisorJob())
+                var moneda = Moneda(
+                    code = "",
+                    value = 0.0
+                )
+                for(codes in post!!.conversion_ratesonversions){
+
+                    moneda!!.code = codes.key
+                    moneda.value = codes.value
+                    myJsonTxt.append(moneda.code + "  " + moneda.value.toString())
+                    //Log.d("this_app", moneda.code + "  " + moneda.value.toString())
+                    MonedaDatabase.getDatabase(applicationContext, applicationScope).MonedaDao().insert(moneda)
+                }
+
+
+            /*
                 var content = ""
                 content += "result: " + post!!.result + "\n"
                 content += "documentation: " + post.documentation + "\n"
@@ -63,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                     content += "value: " + codes.value + "\n"
                 }
                 myJsonTxt.append(content)
-
+             */
             }
 
             override fun onFailure(call: Call<Posts>, t: Throwable) {
