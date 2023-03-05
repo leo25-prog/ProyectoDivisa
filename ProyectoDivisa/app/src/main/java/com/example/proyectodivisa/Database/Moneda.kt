@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Moneda (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    var id : Int,
     var code : String,
     var value : Double
 )

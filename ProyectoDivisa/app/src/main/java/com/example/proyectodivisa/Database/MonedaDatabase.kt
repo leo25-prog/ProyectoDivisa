@@ -23,18 +23,6 @@ abstract class MonedaDatabase  : RoomDatabase(){
                 }
             }
             return INSTANCE!!
-        /*
-            return INSTANCE ?:
-                synchronized(this){
-                    val instance =
-                        Room.databaseBuilder(context, MonedaDatabase::class.java,"moneda")
-                            .addCallback(MonedaDatabaseC(scope))
-                            .build()
-                INSTANCE = instance
-                instance
-            }
-
-        */
         }
     }
 }

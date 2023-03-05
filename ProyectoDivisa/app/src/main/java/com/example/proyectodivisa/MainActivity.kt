@@ -51,36 +51,16 @@ class MainActivity : AppCompatActivity() {
 
                 val applicationScope = CoroutineScope(SupervisorJob())
                 var moneda = Moneda(
+                    id = 0,
                     code = "",
                     value = 0.0
                 )
                 for(codes in post!!.conversion_ratesonversions){
-
                     moneda!!.code = codes.key
                     moneda.value = codes.value
-                    myJsonTxt.append(moneda.code + "  " + moneda.value.toString())
-                    //Log.d("this_app", moneda.code + "  " + moneda.value.toString())
+                    myJsonTxt.append(moneda.code + "  " + moneda.value.toString() + "\n")
                     MonedaDatabase.getDatabase(applicationContext, applicationScope).MonedaDao().insert(moneda)
                 }
-
-
-            /*
-                var content = ""
-                content += "result: " + post!!.result + "\n"
-                content += "documentation: " + post.documentation + "\n"
-                content += "Terms of use: " + post.terms_of_use + "\n"
-                content += "Time last update unix: " + post.time_last_update_unix + "\n"
-                content += "Time last update utc: " + post.time_last_update_utc + "\n"
-                content += "Time next update unix: " + post.time_next_update_unix + "\n"
-                content += "Time next update utc: " + post.time_next_update_utc + "\n"
-                content += "base code: " + post.base_code + "\n"
-
-                for(codes in post.conversion_ratesonversions){
-                    content += "code: " + codes.key + "\n"
-                    content += "value: " + codes.value + "\n"
-                }
-                myJsonTxt.append(content)
-             */
             }
 
             override fun onFailure(call: Call<Posts>, t: Throwable) {
