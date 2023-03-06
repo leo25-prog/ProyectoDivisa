@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.room.Room
 import com.example.proyectodivisa.Database.Moneda
 import com.example.proyectodivisa.Database.MonedaDao
 import com.example.proyectodivisa.Database.MonedaDatabase
@@ -31,7 +32,7 @@ private val sUriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
 
 class MyContentProvider : ContentProvider() {
 
-    var dataBase="moneda"
+    var dataBase="MonedaDatabase"
     var provider ="com.example.proyectodivisa.Content.MyContentProvider"
     var tabla = "moneda"
     var code="code"
@@ -51,7 +52,7 @@ class MyContentProvider : ContentProvider() {
     override fun onCreate(): Boolean {
      //   repository = (context as Myapplication).repositoryMoneda //context
         db = (context as Myapplication).database //helper
-
+        //db= Room.databaseBuilder(context, MonedaDatabase::class.java, dataBase).build()
         uriMatcher = UriMatcher(UriMatcher.NO_MATCH)
         uriMatcher.addURI(provider,tabla,myUriCode)
         MyDB = requireContext().openOrCreateDatabase(dataBase, Context.MODE_PRIVATE, null)

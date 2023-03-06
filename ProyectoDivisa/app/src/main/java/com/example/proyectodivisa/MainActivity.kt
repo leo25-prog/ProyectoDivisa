@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         myJsonTxt = findViewById(R.id.jsonText)
         button = findViewById(R.id.button)
         uri= Uri.parse("content://com.example.proyectodivisa.Content.MyContentProvider/Moneda")
@@ -50,6 +51,9 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
+/*
     private fun getPosts(){
         val retrofit = Retrofit.Builder()
             .baseUrl("https://v6.exchangerate-api.com/")
@@ -88,6 +92,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
+*/
 
 }
