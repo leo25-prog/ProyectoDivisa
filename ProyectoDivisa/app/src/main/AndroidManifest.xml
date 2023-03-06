@@ -5,6 +5,12 @@
     <!-- PERMISOS NECESARIOS PARA LA APLICACION -->
     <!-- PERMISO DE INTERNET -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_PROVIDER" />
+    <uses-permission android:name="android.permission.WRITE_PROVIDER" />
+
+
+    <permission android:name="com.example.proyectodivisa.READ_PERMISSION" android:protectionLevel="normal"/>
+    <permission android:name="com.example.proyectodivisa.WRITE_PERMISSION" android:protectionLevel="normal"/>
 
     <application
         android:allowBackup="true"
@@ -24,6 +30,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:authorities="com.example.proyectodivisa.Content.MyContentProvider"
+            android:exported="true"
+            android:writePermission=""
+            android:readPermission=""
+            android:name=".Content.MyContentProvider"/>
     </application>
 
 </manifest>

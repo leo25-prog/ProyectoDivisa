@@ -1,12 +1,13 @@
 package com.example.proyectodivisa
 
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
-import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.proyectodivisa.Database.Moneda
-import com.example.proyectodivisa.Database.MonedaDao
 import com.example.proyectodivisa.Database.MonedaDatabase
 import com.example.proyectodivisa.Interface.ExchangerateAPI
 import com.example.proyectodivisa.Model.Posts
@@ -18,17 +19,36 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var myJsonTxt : TextView
+    private lateinit var button: Button
+    private lateinit var uri : Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         myJsonTxt = findViewById(R.id.jsonText)
-        getPosts()
+        button = findViewById(R.id.button)
+        uri= Uri.parse("content://com.example.proyectodivisa.Content.MyContentProvider/Moneda")
+
+       // contentResolver
+        //getPosts()
+
+
+        button.setOnClickListener{
+            val cursor: Cursor? = contentResolver.query(uri, arrayOf("code", "value"), null, null, null)
+            cursor?.moveToFirst()
+            myJsonTxt.text=""
+            while (!cursor!!.isAfterLast)
+                myJsonTxt.append("Codigo: " +cursor.getString(0)+" Valor: " + cursor.getString(1) + "\n")
+        }
+
     }
+
+
 
     private fun getPosts(){
         val retrofit = Retrofit.Builder()
@@ -51,13 +71,13 @@ class MainActivity : AppCompatActivity() {
 
                 val applicationScope = CoroutineScope(SupervisorJob())
                 var moneda = Moneda(
-                    id = 0,
+                  //  id = 0,
                     code = "",
                     value = 0.0
                 )
                 for(codes in post!!.conversion_ratesonversions){
-                    moneda!!.code = codes.key
-                    moneda.value = codes.value
+                //    moneda!!.code = codes.key
+                //    moneda.value = codes.value
                     myJsonTxt.append(moneda.code + "  " + moneda.value.toString() + "\n")
                     MonedaDatabase.getDatabase(applicationContext, applicationScope).MonedaDao().insert(moneda)
                 }
@@ -68,4 +88,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+
 }
